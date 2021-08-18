@@ -51,17 +51,13 @@ jobs:
         id: validate
         run: terraform validate -no-color
         continue-on-error: false
-
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan -no-color -out /tmp/plan1 &&
-             terraform show -json /tmp/plan1  > /tmp/plan1.json
-        continue-on-error: false
       - name: OPA Install
         id: install 
         run: curl -L -o opa https://openpolicyagent.org/downloads/v0.31.0/opa_linux_amd64_static && chmod 755 opa && sudo mv opa /usr/bin
         continue-on-error: false
-      - name: OPA Test Command
-        id: test
-        run: opa eval --format pretty --data OPA/validate.rego --input /tmp/plan1.json "data.terraform"
-        continue-on-error: false 
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -out /tmp/plan1 &&
+             terraform show -json /tmp/plan1  > /tmp/plan1.json &&
+             opa eval --format pretty --data OPA/validate.rego --input /tmp/plan1.json "data.terraform"
+        continue-on-error: false
