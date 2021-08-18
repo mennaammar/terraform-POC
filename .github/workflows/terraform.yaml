@@ -59,8 +59,7 @@ jobs:
         continue-on-error: false
       - name: OPA Install
         id: install 
-        run: curl -L -o opa https://openpolicyagent.org/downloads/v0.31.0/opa_linux_amd64_static && 
-        mv opa /usr/bin/ && chmod 755 /usr/bin/opa
+        run: curl -L -o opa https://openpolicyagent.org/downloads/v0.31.0/opa_linux_amd64_static 
         continue-on-error: false
       - name: OPA Test Command
         id: test
