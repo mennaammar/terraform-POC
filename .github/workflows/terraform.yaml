@@ -54,5 +54,13 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color
+        run: terraform plan -no-color -out /tmp/plan1
+             terraform show -json /tmp/plan1  > /tmp/plan1.json
         continue-on-error: false
+      - name: OPA Test
+        uses: petroprotsakh/opa-test-action@v2.1
+        with:
+          options: -v
+          tests: | 
+             opa eval --format pretty --data OPA/validate.rego --input /tmp/plan1.json "data.terraform"
+        continue-on-error: false   
