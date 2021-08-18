@@ -58,9 +58,8 @@ jobs:
              terraform show -json /tmp/plan1  > /tmp/plan1.json
         continue-on-error: false
       - name: OPA Test
-        uses: petroprotsakh/opa-test-action@v2.1
+        uses: openpolicyagent/setup-opa@v1
         with:
-          options: -v
-          tests: | 
-             opa eval --format pretty --data OPA/validate.rego --input /tmp/plan1.json "data.terraform"
+          opa-version: '^0.25.2'
+          run: opa eval --format pretty --data OPA/validate.rego --input /tmp/plan1.json "data.terraform"
         continue-on-error: false   
