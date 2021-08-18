@@ -25,11 +25,18 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout Repository
         uses: actions/checkout@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: "AKIATUUMKTR3R7NP6KUB"
+          aws-secret-access-key: "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"
+          aws-region: eu-west-1
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.4
-
+       
       - name: Terraform Fmt
         id: fmt
         run: terraform fmt 
