@@ -8,22 +8,6 @@ array_contains(arr, elem) {
 }
  
 
-AWS_instance_tags_exist[reason] {
-  
-    resource:= tfplan.resource_changes[_]
-    resource.type =="aws_instance"
-    not resource.change.after.tags.BU
-    not resource.change.after.tags.ENV
-    #trace("tags doesn't exist")
-  reason := sprintf(
-   "%s: resource type is missing the required tags",
-    [resource.type]
-  )
-
-
-
-  
-}
 
 AWS_instance_tags_BU_exist[reason] {
   
