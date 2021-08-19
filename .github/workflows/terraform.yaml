@@ -29,10 +29,10 @@ jobs:
         uses: actions/checkout@v2
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
-          with:
-            aws-access-key-id: "AKIATUUMKTR3R7NP6KUB"
-            aws-secret-access-key: "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"
-            aws-region: eu-west-1
+        with:
+          aws-access-key-id: "AKIATUUMKTR3R7NP6KUB"
+          aws-secret-access-key: "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"
+          aws-region: eu-west-1
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
