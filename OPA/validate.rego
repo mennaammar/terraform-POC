@@ -26,7 +26,6 @@ AWS_instance_tags_BU_exist[reason] {
 AWS_instance_tags_ENV_exist[reason] {
   
     resource:= tfplan.resource_changes[_]
-    trace(resource.change.after.type)
     resource.type =="aws_instance"
     not resource.change.after.tags.ENV
     #trace("tags doesn't exist")
