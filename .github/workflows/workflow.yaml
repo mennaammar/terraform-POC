@@ -67,5 +67,5 @@ jobs:
         continue-on-error: false
       - name: OPA Test
         id: Test
-        run: opa eval --format pretty --data validate.rego --input plan1.json "data.terraform" 
+        run: opa eval --format pretty --data OPA/validate.rego --input plan1.json "data.terraform" 
         continue-on-error: false
