@@ -38,7 +38,7 @@ module "s3_bucket" {
 
   bucket = "my-s3-bucketmenna12345"
   acl    = "private"
-
+  force_destroy = true
   versioning = {
     enabled = true
   }
