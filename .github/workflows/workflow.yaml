@@ -62,7 +62,7 @@ jobs:
         continue-on-error: false
       - name: Execute Terraform Tflint 
         id: Tflint-execute
-        run: tflint   --module --config tflint-config.hcl
+        run: tflint   --module 
         continue-on-error: false
 
       - name: Run tfsec
