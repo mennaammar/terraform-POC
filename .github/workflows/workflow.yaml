@@ -43,9 +43,21 @@ jobs:
         id: fmt
         run: terraform fmt 
         continue-on-error: false
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+        continue-on-error: false
       - name: Terraform Init
         id: init
         run: terraform init
+        continue-on-error: false
+      - name: Terraform Tflint
+        id: tflint-install
+        run: curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+        continue-on-error: false
+      - name: Run Terraform Tflint 
+        id: Tflint-run
+        run: tflint --module --force
         continue-on-error: false
       - name: Run tfsec
         uses: tfsec/tfsec-sarif-action@9a83b5c3524f825c020e356335855741fd02745f
@@ -56,11 +68,6 @@ jobs:
         with:
           # Path to SARIF file relative to the root of the repository
           sarif_file: tfsec.sarif  
-      
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate -no-color
-        continue-on-error: false
       - name: OPA Install
         id: install 
         run: curl -L -o opa https://openpolicyagent.org/downloads/v0.31.0/opa_linux_amd64_static && chmod 755 opa && sudo mv opa /usr/bin
