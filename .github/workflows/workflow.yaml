@@ -27,12 +27,7 @@ jobs:
       
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout Repository
-        uses: actions/checkout@v2
-      - name: Run tfsec
-        uses: tfsec/tfsec-sarif-action@9a83b5c3524f825c020e356335855741fd02745f
-        with:
-          sarif_file: tfsec.sarif             
-
+        uses: actions/checkout@v2        
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -52,7 +47,10 @@ jobs:
         id: init
         run: terraform init
         continue-on-error: false
-
+      - name: Run tfsec
+        uses: tfsec/tfsec-sarif-action@9a83b5c3524f825c020e356335855741fd02745f
+        with:
+          sarif_file: tfsec.sarif   
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
