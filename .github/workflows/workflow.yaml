@@ -56,13 +56,13 @@ jobs:
         id: tflint-install
         run: curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
         continue-on-error: false
-     # - name: Run Terraform Tflint 
-      #  id: Tflint-run
-     #   run: tflint --init  
-      #  continue-on-error: false
+      - name: Run Terraform Tflint 
+        id: Tflint-run
+        run: tflint --init --config tflint-config.hcl
+        continue-on-error: false
       - name: Execute Terraform Tflint 
         id: Tflint-execute
-        run: tflint --init && tflint  --module --force 
+        run: tflint  --module --force 
         continue-on-error: false
 
       - name: Run tfsec
