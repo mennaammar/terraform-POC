@@ -43,13 +43,14 @@ jobs:
         id: fmt
         run: terraform fmt 
         continue-on-error: false
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate -no-color
-        continue-on-error: false
+     
       - name: Terraform Init
         id: init
         run: terraform init
+        continue-on-error: false
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
         continue-on-error: false
       - name: Terraform Tflint
         id: tflint-install
