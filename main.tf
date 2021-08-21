@@ -25,8 +25,6 @@ module "ec2_with_t2" {
   ami           = "ami-02b4e72b17337d6c1" # the ami data source doesn't choose the correct one. ami-037aa94719126a377
   key_name = "TESTKEY"
   instance_type = "t2.micro"
-  #cpu_credits   = "unlimited"
-  
   subnet_id     = tolist(data.aws_subnet_ids.all.ids)[0]
   #  private_ip = "172.31.32.10"
   vpc_security_group_ids      = [module.security_group.security_group_id]
