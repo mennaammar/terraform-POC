@@ -71,7 +71,7 @@ jobs:
           # Path to SARIF file relative to the root of the repository
           sarif_file: tfsec.sarif
       - name: Check tfsec return codes
-        if: success() || failure ()
+        if: success() 
         run: |
             tfsec_return="${{steps.tfsecrun.outputs.tfsec-return-code }}"
             if [[ "$tfsec_return" -eq 1 ]]; then

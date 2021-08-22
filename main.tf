@@ -52,7 +52,7 @@ module "s3_bucket" {
     } 
    }
   
-    http_endpoint="disabled"
+    #http_endpoint="disabled"
 	  #http_tokens = "required"
 
   
