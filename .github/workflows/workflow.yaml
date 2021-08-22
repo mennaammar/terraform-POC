@@ -135,11 +135,21 @@ jobs:
         run: terraform show -json opa-plan1 | sed "1d"  > opa-plan1.json  && cat opa-plan1.json
         continue-on-error: false
       - name: OPA Test
-        id: Test
-        run:  opa eval --fail-defined --format values  -d opa-policies/aws/ --input opa-plan1.json "data.terraform.deny"  
+        id: opatest
+        run:  opa eval  --format pretty  -d opa-policies/aws/ --input opa-plan1.json "data.terraform.deny"  
         #opa eval --format pretty --data opa-policies/aws/validate.rego --input plan1.json "data.terraform" 
         #opa eval --fail-defined --format pretty --data OPA/validate.rego --input plan1.json "data.terraform" 
         #opa eval --fail-defined --format pretty --bundle opa-policies/aws/validate.rego --input plan1.json "data.terraform" 
+        continue-on-error: false
+      - name: Check opa return codes
+        if: success() 
+        run: |
+            opa_return="${{steps.opatest.outputs }}"
+            if [[ contains("$opa_return", '[]' ]]; then
+              exit 0
+              else              
+              exit 1
+              fi
         continue-on-error: false
   Terraform_Plan_Apply:
     runs-on: ubuntu-latest
