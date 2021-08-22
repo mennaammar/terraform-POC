@@ -61,6 +61,7 @@ jobs:
         run: tflint --init  && tflint --module
         continue-on-error: false
       - name: Run-tfsec
+        id: tfsecrun
         uses: tfsec/tfsec-sarif-action@9a83b5c3524f825c020e356335855741fd02745f
         with:
           working_directory: .
@@ -73,7 +74,7 @@ jobs:
       - name: Check tfsec return codes
         if: success() || failure ()
         run: |
-          tfsec_return="${{ steps.Run-tfsec.outputs.tfsec-return-code }}"
+          tfsec_return="${{steps.tfsecrun.outputs.tfsec-return-code }}"
          
           if [[ "$tfsec_return" -eq 1 ]]; then
             echo "tfsec correctly returned failure ${tfsec_return}"
