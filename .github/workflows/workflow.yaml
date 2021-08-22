@@ -136,7 +136,7 @@ jobs:
         continue-on-error: false
       - name: OPA Test
         id: Test
-        run:  opa eval --fail --format raw  -d opa-policies/aws/ --input opa-plan1.json "data.terraform.deny"  
+        run:  opa eval --fail-defined --format values  -d opa-policies/aws/ --input opa-plan1.json "data.terraform.deny"  
         #opa eval --format pretty --data opa-policies/aws/validate.rego --input plan1.json "data.terraform" 
         #opa eval --fail-defined --format pretty --data OPA/validate.rego --input plan1.json "data.terraform" 
         #opa eval --fail-defined --format pretty --bundle opa-policies/aws/validate.rego --input plan1.json "data.terraform" 
