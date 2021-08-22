@@ -144,7 +144,7 @@ jobs:
       - name: Check opa return codes
         if: success() 
         run: |
-            opa_return=$(opa eval --fail-defined --format pretty  -d opa-policies/aws/ --input plan1.json "count(data.terraform.deny)")
+            opa_return=$(opa eval  --format pretty  -d opa-policies/aws/ --input opa-plan1.json "count(data.terraform.deny)")
              exit $opa_return
         continue-on-error: false
   Terraform_Plan_Apply:
