@@ -1,3 +1,7 @@
+package terraform
+ 
+import input as tfplan
+
 AWS_instance_tags_BU_exist[reason] {
   
     resource:= tfplan.resource_changes[_]

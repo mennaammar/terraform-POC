@@ -1,3 +1,6 @@
+package terraform
+ 
+import input as tfplan
 S3_validate_not_public[reason_public] {
   
     resource:= tfplan.resource_changes[_]

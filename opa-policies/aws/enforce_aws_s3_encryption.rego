@@ -1,3 +1,6 @@
+package terraform
+ 
+import input as tfplan
 
 S3_validate_not_encrypted[reason] {
   
