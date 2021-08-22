@@ -43,13 +43,14 @@ module "s3_bucket" {
   ##################################################
   ##########Security bugs #################
     block_public_policy = true
+     block_public_acls = true
   server_side_encryption_configuration = {
     rule = {
       apply_server_side_encryption_by_default = {
        sse_algorithm = "AES256"
       }
     }
-    block_public_acls = true
+   
   
 }
  #####################################################
