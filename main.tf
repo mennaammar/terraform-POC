@@ -49,6 +49,7 @@ module "s3_bucket" {
        sse_algorithm = "AES256"
       }
     }
+    block_public_acls = true
   
 }
  #####################################################
