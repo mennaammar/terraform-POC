@@ -40,10 +40,10 @@ module "ec2_with_t2" {
   }	
    ###################################
    ####OPA ####
-   tags = {
-    BU   = "IT"
-    ENV = "dev"
-  }
+   #tags = {
+   # BU   = "IT"
+   # ENV = "dev"
+ # }
    
 }
 module "s3_bucket" {
