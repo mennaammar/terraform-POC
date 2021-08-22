@@ -86,7 +86,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v1
         with:
           # Path to SARIF file relative to the root of the repository
-          sarif_file: tfsec.sarif  
+          sarif_file: terrascan.sarif  
       - name: OPA Install
         id: install 
         run: curl -L -o opa https://openpolicyagent.org/downloads/v0.31.0/opa_linux_amd64_static && chmod 755 opa && sudo mv opa /usr/bin
