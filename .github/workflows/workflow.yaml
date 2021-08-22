@@ -128,11 +128,11 @@ jobs:
         continue-on-error: false
       - name: Show Plan
         id: show
-        run: terraform show -json opa-plan1 | sed "1d"  > opa-plan1.json  
+        run: terraform show -json opa-plan1 | sed "1d"  > opa-plan1.json  && cat opa-plan1.json
         continue-on-error: false
       - name: OPA Test
         id: Test
-        run:  opa eval  --bundle opa-policies/aws/ --input plan1.json "data.terraform.deny"  
+        run:  opa eval  --bundle opa-policies/aws/ --input opa-plan1.json "data.terraform.deny"  
         #opa eval --format pretty --data opa-policies/aws/validate.rego --input plan1.json "data.terraform" 
         #opa eval --fail-defined --format pretty --data OPA/validate.rego --input plan1.json "data.terraform" 
         #opa eval --fail-defined --format pretty --bundle opa-policies/aws/validate.rego --input plan1.json "data.terraform" 
