@@ -2,13 +2,6 @@ package terraform
  
 import input as tfplan
 
- 
-array_contains(arr, elem) {
-	arr[_] = elem
-}
- 
-
-
 AWS_instance_tags_BU_exist[reason] {
   
     resource:= tfplan.resource_changes[_]
