@@ -114,6 +114,10 @@ jobs:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
           aws-secret-access-key: ${{secrets.AWS_SECRET_KEY}}
           aws-region: eu-west-1    
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.4
       - name: OPA Install
         id: install 
         run: curl -L -o opa https://openpolicyagent.org/downloads/v0.31.0/opa_linux_amd64_static && chmod 755 opa && sudo mv opa /usr/bin
