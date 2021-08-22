@@ -60,7 +60,9 @@ module "s3_bucket" {
     } 
    }
   
-   
+   logging {
+		target_bucket = "logging-bucketmaf123"
+	}
 
   
  #####################################################
