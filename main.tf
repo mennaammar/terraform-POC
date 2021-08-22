@@ -36,11 +36,17 @@ module "s3_bucket" {
 
   bucket = "my-s3-bucketmenna12345"
   acl    = "private"
-  #block_public_policy = true
+  block_public_policy = true
   versioning = {
     enabled = true
   }
-
+server_side_encryption_configuration {
+  rule {
+  apply_server_side_encryption_by_default {
+  sse_algorithm = "AES256"
+  }
+}
+}
 }
 
 
