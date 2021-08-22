@@ -70,18 +70,18 @@ jobs:
         with:
           # Path to SARIF file relative to the root of the repository
           sarif_file: tfsec.sarif
-      - name: Check tfsec return codes
-        if: success() || failure ()
-        run: |
-          tfsec_return="${{steps.tfsecrun.outputs.tfsec-return-code }}"
+      #- name: Check tfsec return codes
+      #  if: success() || failure ()
+     #   run: |
+     #     tfsec_return="${{steps.tfsecrun.outputs.tfsec-return-code }}"
          
-          if [[ "$tfsec_return" -eq 1 ]]; then
-            echo "tfsec correctly returned failure ${tfsec_return}"
-            exit 1
-          else
-            echo "tfsec returned ${tfsec_return}, expected '1'. Failing..."
-            exit 0
-          fi
+   #       if [[ "$tfsec_return" -eq 1 ]]; then
+    #        echo "tfsec correctly returned failure ${tfsec_return}"
+    #        exit 1
+     #     else
+      #      echo "tfsec returned ${tfsec_return}, expected '1'. Failing..."
+     #       exit 0
+      #    fi
       - name: OPA Install
         id: install 
         run: curl -L -o opa https://openpolicyagent.org/downloads/v0.31.0/opa_linux_amd64_static && chmod 755 opa && sudo mv opa /usr/bin
