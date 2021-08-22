@@ -115,9 +115,10 @@ jobs:
           aws-secret-access-key: ${{secrets.AWS_SECRET_KEY}}
           aws-region: eu-west-1    
       - name: Terraform Init
-        id: init
+        id: init 
         run: terraform init
         continue-on-error: false
+        
       - name: Terraform Plan
         id: plan
         run: terraform plan -out plan1 && terraform show -json  plan1 | sed "1d"  > plan1.json
