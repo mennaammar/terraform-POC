@@ -41,7 +41,7 @@ module "s3_bucket" {
     enabled = true
   }
 
-  server_side_encryption = "AES256"
+  #server_side_encryption = "AES256"
 }
 
 
