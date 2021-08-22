@@ -36,7 +36,7 @@ module "s3_bucket" {
 
   bucket = "my-s3-bucketmenna12345"
   acl    = "private"
-  
+  #block_public_policy = true
   versioning = {
     enabled = true
   }
