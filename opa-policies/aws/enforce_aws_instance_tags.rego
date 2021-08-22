@@ -2,7 +2,7 @@ package terraform
  
 import input as tfplan
 
-AWS_instance_tags_BU_exist[reason] {
+deny[reason] {
   
     resource:= tfplan.resource_changes[_]
     resource.type =="aws_instance"
@@ -10,19 +10,19 @@ AWS_instance_tags_BU_exist[reason] {
   
     #trace("tags doesn't exist")
   reason := sprintf(
-   "%s: resource type is missing the required tags",
+   "%s: resource type is missing BU required tags",
     [resource.type]
   )
   
 }
-AWS_instance_tags_ENV_exist[reason] {
+deny[reason] {
   
     resource:= tfplan.resource_changes[_]
     resource.type =="aws_instance"
     not resource.change.after.tags.ENV
     #trace("tags doesn't exist")
   reason := sprintf(
-   "%s: resource type is missing the required tags",
+   "%s: resource type is missing ENV required tags",
     [resource.type]
   )
   

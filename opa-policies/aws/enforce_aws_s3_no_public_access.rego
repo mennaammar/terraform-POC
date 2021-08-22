@@ -1,7 +1,7 @@
 package terraform
  
 import input as tfplan
-S3_validate_not_public[reason_public] {
+deny[reason_public] {
   
     resource:= tfplan.resource_changes[_]
     resource.type =="aws_s3_bucket"

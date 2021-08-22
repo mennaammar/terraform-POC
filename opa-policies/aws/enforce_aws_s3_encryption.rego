@@ -2,7 +2,7 @@ package terraform
  
 import input as tfplan
 
-S3_validate_not_encrypted[reason] {
+deny[reason] {
   
     resource:= tfplan.resource_changes[_]
     resource.type =="aws_s3_bucket"
