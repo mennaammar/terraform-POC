@@ -18,7 +18,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  initialize:
+  Tranform_Format:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -36,9 +36,9 @@ jobs:
         id: fmt
         run: terraform fmt 
         continue-on-error: false     
-  Validate:
+  Validate_Syntax_Semantics:
     runs-on: ubuntu-latest
-    needs: initialize
+    needs: Tranform_Format
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2 
@@ -64,6 +64,10 @@ jobs:
         id: Tflint-run
         run: tflint --init  && tflint --module
         continue-on-error: false
+  Tfsec_job:
+    runs-on: ubuntu-latest
+    needs: ['Tranform_Format','Validate_Syntax_Semantics']
+    steps:
       - name: Run-tfsec
         id: tfsecrun
         uses: tfsec/tfsec-sarif-action@9a83b5c3524f825c020e356335855741fd02745f
@@ -86,10 +90,17 @@ jobs:
              echo "tfsec returned ${tfsec_return}, expected '1'. Failing..."
               exit 0
              fi
+  Validate_OPA:  
+    runs-on: ubuntu-latest
+    needs: ['Tranform_Format','Validate_Syntax_Semantics']
       - name: OPA Install
         id: install 
         run: curl -L -o opa https://openpolicyagent.org/downloads/v0.31.0/opa_linux_amd64_static && chmod 755 opa && sudo mv opa /usr/bin
         continue-on-error: false
+  Terraform_Plan_Apply:
+    runs-on: ubuntu-latest
+    needs: ['Tranform_Format','Validate_Syntax_Semantics','Validate_OPA']
+    steps:    
       - name: Terraform Plan
         id: plan
         run: terraform plan -out plan1 && terraform show -json  plan1 | sed "1d"  > plan1.json
