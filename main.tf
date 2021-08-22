@@ -35,6 +35,10 @@ module "ec2_with_t2" {
   ##########Security bugs #################
   ## comment this to remediate
    #associate_public_ip_address = true
+  metadata_options {
+	http_tokens = "required"
+  }	
+   ###################################
    
 }
 module "s3_bucket" {
