@@ -28,6 +28,8 @@ module "ec2_with_t2" {
   subnet_id     = tolist(data.aws_subnet_ids.all.ids)[0]
   #  private_ip = "172.31.32.10"
   vpc_security_group_ids      = [module.security_group.security_group_id]
+  ##########Security bugs #################
+  ## comment this to remediate
   associate_public_ip_address = true
    
 }
@@ -40,18 +42,18 @@ module "s3_bucket" {
   versioning = {
     enabled = true
   }
-  
+
   ##################################################
   ##########Security bugs #################
-    block_public_policy = true
-     block_public_acls = true
-  server_side_encryption_configuration = {
-    rule = {
-      apply_server_side_encryption_by_default = {
-       sse_algorithm = "AES256"
-      }
-    } 
-   }
+  #  block_public_policy = true
+  #   block_public_acls = true
+ # server_side_encryption_configuration = {
+ #   rule = {
+  #    apply_server_side_encryption_by_default = {
+  #     sse_algorithm = "AES256"
+  #    }
+  #  } 
+   #}
   
     #http_endpoint="disabled"
 	  #http_tokens = "required"
