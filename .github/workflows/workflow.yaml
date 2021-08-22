@@ -144,12 +144,8 @@ jobs:
       - name: Check opa return codes
         if: success() 
         run: |
-            opa_return="${{steps.opatest.outputs}}"
-            if [[ contains("$opa_return", '[]') ]]; then
-              exit 0
-              else              
-              exit 1
-              fi
+            opa_return=$(opa eval --fail-defined --format pretty  -d opa-policies/aws/ --input plan1.json "count(data.terraform.deny)")
+             exit $opa_return
         continue-on-error: false
   Terraform_Plan_Apply:
     runs-on: ubuntu-latest
