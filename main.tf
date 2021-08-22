@@ -17,7 +17,7 @@ module "security_group" {
 }
 
 module "ec2_with_t2" {
-  source = "./ec2_sec_group"
+  source = "terraform-aws-modules/ec2-instance/aws"
 
   instance_count = 1
 
@@ -51,10 +51,10 @@ module "s3_bucket" {
       }
     } 
    }
-  metadata_options {
+  
     http_endpoint="disabled"
 	  #http_tokens = "required"
 
-  }	
+  
  #####################################################
 }
