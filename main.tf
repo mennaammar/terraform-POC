@@ -26,11 +26,11 @@ module "ec2_with_t2" {
   key_name = "TESTKEY"
   instance_type = "t2.micro"
   subnet_id     = tolist(data.aws_subnet_ids.all.ids)[0]
-  #  private_ip = "172.31.32.10"
+
   vpc_security_group_ids      = [module.security_group.security_group_id]
   ##########Security bugs #################
   ## comment this to remediate
-  associate_public_ip_address = true
+   #associate_public_ip_address = true
    
 }
 module "s3_bucket" {
