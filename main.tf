@@ -39,6 +39,11 @@ module "ec2_with_t2" {
 	http_tokens = "required"
   }	
    ###################################
+   ####OPA ####
+   tags = {
+    BU   = "IT"
+    ENV = "dev"
+  }
    
 }
 module "s3_bucket" {
