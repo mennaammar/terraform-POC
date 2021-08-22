@@ -145,7 +145,7 @@ jobs:
         if: success() 
         run: |
             opa_return="${{steps.opatest.outputs }}"
-            if [[ contains("$opa_return", '[]' ]]; then
+            if [[ contains("$opa_return", '[]') ]]; then
               exit 0
               else              
               exit 1
