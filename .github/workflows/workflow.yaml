@@ -93,6 +93,7 @@ jobs:
   Validate_OPA:  
     runs-on: ubuntu-latest
     needs: ['Tranform_Format','Validate_Syntax_Semantics']
+    steps:
       - name: OPA Install
         id: install 
         run: curl -L -o opa https://openpolicyagent.org/downloads/v0.31.0/opa_linux_amd64_static && chmod 755 opa && sudo mv opa /usr/bin
