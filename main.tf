@@ -40,6 +40,7 @@ module "s3_bucket" {
   versioning = {
     enabled = true
   }
+  
   ##################################################
   ##########Security bugs #################
     block_public_policy = true
