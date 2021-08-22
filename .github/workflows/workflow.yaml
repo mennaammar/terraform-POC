@@ -144,7 +144,7 @@ jobs:
       - name: Check opa return codes
         if: success() 
         run: |
-            opa_return="${{steps.opatest.outputs }}"
+            opa_return="${{steps.opatest.outputs}}"
             if [[ contains("$opa_return", '[]') ]]; then
               exit 0
               else              
