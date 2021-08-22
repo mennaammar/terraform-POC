@@ -63,7 +63,6 @@ jobs:
       - name: Run tfsec
         uses: tfsec/tfsec-sarif-action@9a83b5c3524f825c020e356335855741fd02745f
         with:
-          fail_on_error: true
           working_directory: .
           sarif_file: tfsec.sarif 
       - name: Upload SARIF file
