@@ -71,7 +71,7 @@ module "s3_bucket" {
    }
   
    logging = {
-		target_bucket = "logging-bucketmaf" #logging-bucketmaf
+		target_bucket = "bucket-logging-maf-us-east" #logging-bucketmaf
 	}
 
   
