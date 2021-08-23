@@ -68,7 +68,7 @@ module "s3_bucket" {
      #   sse_algorithm = "AES256"
      #   }
     #} 
-   }
+  # }
   
    logging = {
 		target_bucket = "bucket-logging-maf-us-east" #logging-bucketmaf
