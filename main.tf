@@ -63,11 +63,11 @@ module "s3_bucket" {
      restrict_public_buckets = true
      ignore_public_acls = true
     # server_side_encryption_configuration = {
-  #   rule = {
-   #    apply_server_side_encryption_by_default = {
-   #    sse_algorithm = "AES256"
-  #     }
-   # } 
+     # rule = {
+     #   apply_server_side_encryption_by_default = {
+     #   sse_algorithm = "AES256"
+     #   }
+    #} 
    }
   
    logging = {
