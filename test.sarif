@@ -14,7 +14,10 @@
             "level": "error",
             "message": {
               "text": "'x' is assigned a value but never used."
-            }
+            },
+            "locations": [
+           
+            ]
           }
         ]
       }
