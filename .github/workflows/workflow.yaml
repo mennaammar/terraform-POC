@@ -27,7 +27,13 @@ jobs:
       
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout Repository
-        uses: actions/checkout@v2        
+        uses: actions/checkout@v2     
+      - name: Upload SARIF file
+        if: failure() 
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: test.sarif   
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -145,12 +151,6 @@ jobs:
             opa_return=$(opa eval  --format pretty  -d opa-policies/aws/ --input opa-plan1.json "count(data.terraform.deny)")
              exit $opa_return
         continue-on-error: false
-      - name: Upload SARIF file
-        if: failure() 
-        uses: github/codeql-action/upload-sarif@v1
-        with:
-          # Path to SARIF file relative to the root of the repository
-          sarif_file: opa.sarif
   Terraform_Plan_Apply:
     runs-on: ubuntu-latest
     needs: ['Tranform_Format','Validate_Syntax_Semantics','Tfsec_job','Validate_OPA']
@@ -175,18 +175,18 @@ jobs:
         id: Apply
         run: terraform apply -auto-approve
         continue-on-error: false
-  Send_notification:
-    runs-on: ubuntu-latest
-    if: always()
-    needs: ['Tranform_Format','Validate_Syntax_Semantics','Tfsec_job','Validate_OPA','Terraform_Plan_Apply']
-    steps:
-      - uses: actions/checkout@master
-      - name: Microsoft Teams Notification
-        uses: skitionek/notify-microsoft-teams@master
-        if: always()
-        with:
-          webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
-          needs: ${{ toJson(needs) }}
-          job: ${{ toJson(job) }}
-          steps: ${{ toJson(steps) }}
-          #dry_run: True
+  # Send_notification:
+  #   runs-on: ubuntu-latest
+  #   if: always()
+  #   needs: ['Tranform_Format','Validate_Syntax_Semantics','Tfsec_job','Validate_OPA','Terraform_Plan_Apply']
+  #   steps:
+  #     - uses: actions/checkout@master
+  #     - name: Microsoft Teams Notification
+  #       uses: skitionek/notify-microsoft-teams@master
+  #       if: always()
+  #       with:
+  #         webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
+  #         needs: ${{ toJson(needs) }}
+  #         job: ${{ toJson(job) }}
+  #         steps: ${{ toJson(steps) }}
+

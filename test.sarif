@@ -1,0 +1,14 @@
+"results": [
+    {
+      "ruleId": "C2001",
+      "message": {
+        "text": "Variable \"count\" was used without being initialized.",
+        "richText": "Variable `count` was used without being initialized." 
+      },
+      "locations": [
+        {
+         
+          },
+          
+        }
+      ]
