@@ -177,7 +177,6 @@ jobs:
         continue-on-error: false
   Send_notification:
     runs-on: ubuntu-latest
-    needs: ['Tranform_Format','Validate_Syntax_Semantics','Tfsec_job','Validate_OPA']
     steps:
       - uses: actions/checkout@master
       - name: Microsoft Teams Notification
