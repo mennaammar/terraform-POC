@@ -27,7 +27,7 @@ module "ec2_with_t2" {
 
   name          = "maf-instance-t2"
   ami           = "ami-0c2b8ca1dad447f8a" # the ami data source doesn't choose the correct one. ami-037aa94719126a377
-  key_name = "TESTKEY"
+  key_name = "mafkey"
   instance_type = "t2.micro"
   subnet_id     = tolist(data.aws_subnet_ids.all.ids)[0]
 
