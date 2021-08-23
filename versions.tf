@@ -7,8 +7,8 @@ terraform {
   }
     backend "s3" {
       encrypt = true
-       region = "eu-west-1"
-      bucket = "terraform-state-maf-demo"
+      region = "us-east-1" #us-east-1
+      bucket = "terraform-state-maf-demo" #terraform-state-maf-poc
       key = "terraform.tfstate"
     }
 }

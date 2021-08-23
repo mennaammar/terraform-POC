@@ -25,7 +25,7 @@ module "ec2_with_t2" {
 
   instance_count = 1
 
-  name          = "example-t2"
+  name          = "maf-instance-t2"
   ami           = "ami-02b4e72b17337d6c1" # the ami data source doesn't choose the correct one. ami-037aa94719126a377
   key_name = "TESTKEY"
   instance_type = "t2.micro"
@@ -49,7 +49,7 @@ module "ec2_with_t2" {
 module "s3_bucket" {
   source = "terraform-aws-modules/s3-bucket/aws"
 
-  bucket = "my-s3-bucketmenna12345"
+  bucket = "my-s3-bucketmafterraformpoc"
   acl    = "private"
 
   versioning = {
@@ -71,7 +71,7 @@ module "s3_bucket" {
    }
   
    logging = {
-		target_bucket = "logging-bucketmaf123"
+		target_bucket = "logging-bucketmaf" #logging-bucketmaf
 	}
 
   
