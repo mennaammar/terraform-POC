@@ -141,12 +141,12 @@ jobs:
       - name: Check opa return codes
         if: success() 
         run: |
+            opa eval  --format pretty  -d opa-policies/aws/ --input opa-plan1.json "data.terraform.deny" > opa.sarif &&
             opa_return=$(opa eval  --format pretty  -d opa-policies/aws/ --input opa-plan1.json "count(data.terraform.deny)")
              exit $opa_return
         continue-on-error: false
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v1
-        run: opa eval  --format pretty  -d opa-policies/aws/ --input opa-plan1.json "data.terraform.deny" > opa.sarif
         with:
           # Path to SARIF file relative to the root of the repository
           sarif_file: opa.sarif
