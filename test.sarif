@@ -1,10 +1,7 @@
-"results": [
-    {
-      "ruleId": "C2001",
-      "message": {
-        "text": "Variable \"count\" was used without being initialized.",
-        "richText": "Variable `count` was used without being initialized." 
-      }
-      
-    }
-]
+      "results": [
+        {
+          "ruleId": "TUT1001",
+          "message": {
+            "text": "Absent result."
+          }
+      ]
