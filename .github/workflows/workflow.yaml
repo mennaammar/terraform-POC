@@ -141,7 +141,6 @@ jobs:
       - name: Check opa return codes
         if: success() 
         run: |
-            opa eval  --format pretty  -d opa-policies/aws/ --input opa-plan1.json "data.terraform.deny" > opa.sarif &&
             opa_return=$(opa eval  --format pretty  -d opa-policies/aws/ --input opa-plan1.json "count(data.terraform.deny)")
              exit $opa_return
         continue-on-error: false
@@ -169,9 +168,9 @@ jobs:
         id: Apply
         run: terraform apply -auto-approve
         continue-on-error: false
-  Send_failure:
+  Send_notification:
     runs-on: ubuntu-latest
-    if: always() 
+    if: always()
     needs: ['Tranform_Format','Validate_Syntax_Semantics','Tfsec_job','Validate_OPA','Terraform_Plan_Apply']
     steps:
       - uses: actions/checkout@master
@@ -180,14 +179,9 @@ jobs:
         if: success()
         with:
           webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
-        # - name: Microsoft Teams Notification
-        #   uses: skitionek/notify-microsoft-teams@master
-        #   if: success()
-        #   with:
-        #     webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
-        #     needs: ${{ toJson(needs) }}
-        #     job: ${{ toJson(job) }}
-        #     steps: ${{ toJson(steps) }}      
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}      
 
     
 
