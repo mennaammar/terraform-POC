@@ -10,8 +10,8 @@ module "security_group" {
   description = "Security group for example usage with EC2 instance"
   vpc_id      = data.aws_vpc.default.id
 
-  ingress_cidr_blocks = ["0.0.0.0/0"]
- # ingress_cidr_blocks = ["197.48.33.53/32"]
+ # ingress_cidr_blocks = ["0.0.0.0/0"]
+  ingress_cidr_blocks = ["197.48.189.127/32"]
   ingress_rules       = [ "ssh-tcp"]
 
     ##########Security bugs #################
