@@ -161,7 +161,10 @@ jobs:
         with:
           webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
           needs: ${{ toJson(needs) }}
-          job: 'Validate_OPA' 
+          raw: >-
+            {
+              "title": "OPA Evaluation Failed!"
+            }
   
   Terraform_Plan_Apply:
     runs-on: ubuntu-latest
