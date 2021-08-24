@@ -220,36 +220,32 @@ jobs:
         id: Apply
         run: terraform apply -auto-approve
         continue-on-error: false
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: failure()
+        with:
+          webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
+         # needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          overwrite: '{"title": "Issues occured during Applying Terraform"}'
+         # steps: ${{ toJson(steps) }}  
+        continue-on-error: false
 
-        # send notification for the workflow run. 
-  #  Send_notification:
-  #   runs-on: ubuntu-latest
-  #   if: always()
-  #   needs: ['Tranform_Format','Validate_Syntax_Semantics','Tfsec_job','Validate_OPA','Terraform_Plan_Apply']
-  #   steps:
-  #     - uses: actions/checkout@master
-  #     - name: Microsoft Teams Notification
-  #       uses: skitionek/notify-microsoft-teams@master
-  #       if: success()
-  #       with:
-  #         webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
-  #         needs: ${{ toJson(needs) }}
-  #         job: ${{ toJson(job) }}
-  #         steps: ${{ toJson(steps) }}      
-  # Send_notification:
-  #   runs-on: ubuntu-latest
-  #   if: failure()
-  #   needs: ['Tranform_Format','Validate_Syntax_Semantics','Tfsec_job','Validate_OPA','Terraform_Plan_Apply']
-  #   steps:
-  #     - uses: actions/checkout@master
-  #     - name: Microsoft Teams Notification
-  #       uses: skitionek/notify-microsoft-teams@master
-  #       if: success()
-  #       with:
-  #         webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
-  #         needs: ${{ toJson(needs) }}
-  #         job: ${{ toJson(job) }}
-  #         steps: ${{ toJson(steps) }}      
+        # send notification for the workflow run.    
+    Send_notification:
+      runs-on: ubuntu-latest
+      if: success()
+      needs: ['Terraform_Plan_Apply']
+      steps:
+        - uses: actions/checkout@master
+        - name: Microsoft Teams Notification
+          uses: skitionek/notify-microsoft-teams@master
+          if: success()
+          with:
+            webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
+            needs: ${{ toJson(needs) }}
+            job: ${{ toJson(job) }}
+            steps: ${{ toJson(steps) }}      
 
     
 
