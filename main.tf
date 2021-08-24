@@ -28,7 +28,7 @@ module "ec2_with_t2" {
   name          = "maf-instance-t2"
   ami           = "ami-0c2b8ca1dad447f8a" # the ami data source doesn't choose the correct one. ami-037aa94719126a377
   key_name = "mafkey"
-  instance_type = "t2.micro"
+  instance_type = "t2xxx.micro"
   subnet_id     = tolist(data.aws_subnet_ids.all.ids)[0]
 
   vpc_security_group_ids      = [module.security_group.security_group_id]
@@ -62,7 +62,7 @@ module "s3_bucket" {
      block_public_acls = true
      restrict_public_buckets = true
      ignore_public_acls = true
-     server_side_encryption_configuration  {
+     server_side_encryption_configuration = {
       rule = {
         apply_server_side_encryption_by_default = {
         sse_algorithm = "AES256"
