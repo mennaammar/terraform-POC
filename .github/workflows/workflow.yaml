@@ -146,15 +146,15 @@ jobs:
         # test the OPA rules in .rego files againt the terrform plan.
       - name: OPA Test
         id: opatest
-        run:  opa eval  --format pretty  -d opa-policies/aws/ --input opa-plan1.json "data.terraform.deny"  
+        run:  opa eval --fail-defined  --format pretty  -d opa-policies/aws/ --input opa-plan1.json "data.terraform.deny"  
         continue-on-error: false
         # issues error and stop the job if error occured during OPA check.
-      - name: Check opa return codes
-        if: success() 
-        run: |
-            opa_return=$(opa eval  --format pretty  -d opa-policies/aws/ --input opa-plan1.json "count(data.terraform.deny)")
-             exit $opa_return
-        continue-on-error: false
+      # - name: Check opa return codes
+      #   if: success() 
+      #   run: |
+      #       opa_return=$(opa eval  --format pretty  -d opa-policies/aws/ --input opa-plan1.json "count(data.terraform.deny)")
+      #        exit $opa_return
+      #   continue-on-error: false
       - name: Microsoft Teams Notification
         uses: skitionek/notify-microsoft-teams@master
         if: failure()
