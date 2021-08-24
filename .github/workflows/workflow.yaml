@@ -32,7 +32,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.4
-      # checks terraform format and make sure the format is valid. 
+      # reformat terraform code. 
       - name: Terraform Fmt
         id: fmt
         run: terraform fmt 
