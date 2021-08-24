@@ -58,16 +58,6 @@ jobs:
         id: validate
         run: terraform validate -no-color
         continue-on-error: false
-      - name: Microsoft Teams Notification
-        uses: skitionek/notify-microsoft-teams@master
-        if: failure()
-        with:
-          webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
-         # needs: ${{ toJson(needs) }}
-          job: ${{ toJson(job) }}
-          overwrite: '{"title": "Issues Found in Terraform Syntax Validation"}'
-         # steps: ${{ toJson(steps) }}  
-        continue-on-error: false
         # make sure the terraform provider (AWS) code is correct. using correct aws instance type for example.
       - name: Terraform Tflint
         id: tflint-install
@@ -84,7 +74,7 @@ jobs:
           webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
          # needs: ${{ toJson(needs) }}
           job: ${{ toJson(job) }}
-          overwrite: '{"title": "Issues Found in Provider syntax Validation"}'
+          overwrite: '{"title": "Issues Found in Code Quality Validation"}'
          # steps: ${{ toJson(steps) }}  
         continue-on-error: false
   tfsec_Security_Validation:
