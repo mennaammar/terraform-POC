@@ -7,10 +7,10 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
-   # branches: [ master ]
+ 
   pull_request:
     branches: [ main ]
-   # branches: [ master ]
+ 
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -32,6 +32,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.4
+      # checks terraform format and make sure the format is valid. 
       - name: Terraform Fmt
         id: fmt
         run: terraform fmt 
@@ -42,20 +43,24 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2 
+        # set a AWS credentials for terraform to work.
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
           aws-secret-access-key: ${{secrets.AWS_SECRET_KEY}}
           aws-region: eu-west-1    
+        # initializes terraform to download terraform provider, brings the github modules,etc..
       - name: Terraform Init
         id: init
         run: terraform init
         continue-on-error: false
+        # validate the syntax of the terraform code.
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
         continue-on-error: false
+        # make sure the terraform provider (AWS) code is correct. using correct aws instance type for example.
       - name: Terraform Tflint
         id: tflint-install
         run: curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
@@ -80,12 +85,14 @@ jobs:
         id: init
         run: terraform init
         continue-on-error: false
+        # find security issues in terraform code.
       - name: Run-tfsec
         id: tfsecrun
         uses: tfsec/tfsec-sarif-action@9a83b5c3524f825c020e356335855741fd02745f
         with:
           working_directory: .
           sarif_file: tfsec.sarif 
+        # upload the findings to security tab in github
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v1
         with:
@@ -118,6 +125,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.4
+          # install OPA 
       - name: OPA Install
         id: install 
         run: curl -L -o opa https://openpolicyagent.org/downloads/v0.31.0/opa_linux_amd64_static && chmod 755 opa && sudo mv opa /usr/bin
@@ -126,6 +134,7 @@ jobs:
         id: init 
         run: terraform init
         continue-on-error: false
+        # generate the terraform plan for OPA to validate it.
       - name: Terraform Plan
         id: plan
         run: terraform plan -out opa-plan1  
@@ -134,10 +143,12 @@ jobs:
         id: show
         run: terraform show -json opa-plan1 | sed "1d"  > opa-plan1.json  && cat opa-plan1.json
         continue-on-error: false
+        # test the OPA rules in .rego files againt the terrform plan.
       - name: OPA Test
         id: opatest
         run:  opa eval  --format pretty  -d opa-policies/aws/ --input opa-plan1.json "data.terraform.deny"  
         continue-on-error: false
+        # issues error and stop the job if error occured during OPA check.
       - name: Check opa return codes
         if: success() 
         run: |
@@ -164,10 +175,13 @@ jobs:
         id: plan
         run: terraform plan 
         continue-on-error: false
+        # apply terraform plan. 
       - name: Terraform apply
         id: Apply
         run: terraform apply -auto-approve
         continue-on-error: false
+
+        # send notification for the workflow run. 
   Send_notification:
     runs-on: ubuntu-latest
     if: always()
