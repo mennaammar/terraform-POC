@@ -18,13 +18,11 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  Tranform_Format:
+  Tranform_Setup:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout Repository
         uses: actions/checkout@v2     
@@ -37,9 +35,9 @@ jobs:
         id: fmt
         run: terraform fmt 
         continue-on-error: false     
-  Validate_Syntax_Semantics:
+  Validate_Code_Quality:
     runs-on: ubuntu-latest
-    needs: Tranform_Format
+    needs: Tranform_Setup
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2 
@@ -89,9 +87,9 @@ jobs:
           overwrite: '{"title": "Issues Found in Provider syntax Validation"}'
          # steps: ${{ toJson(steps) }}  
         continue-on-error: false
-  Tfsec_job:
+  tfsec_Security_Validation:
     runs-on: ubuntu-latest
-    needs: ['Tranform_Format','Validate_Syntax_Semantics']
+    needs: ['Tranform_Setup','Validate_Code_Quality']
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2 
@@ -139,9 +137,9 @@ jobs:
           overwrite: '{"title": "Vulnerabilities Found by tfsec"}'
          # steps: ${{ toJson(steps) }}  
         continue-on-error: false
-  Validate_OPA:  
+  OPA_Security_Validation:  
     runs-on: ubuntu-latest
-    needs: ['Tranform_Format','Validate_Syntax_Semantics']
+    needs: ['Tranform_Setup','Validate_Code_Quality']
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2 
@@ -197,7 +195,7 @@ jobs:
         continue-on-error: false
   Terraform_Plan_Apply:
     runs-on: ubuntu-latest
-    needs: ['Tranform_Format','Validate_Syntax_Semantics','Tfsec_job','Validate_OPA']
+    needs: ['Tranform_Setup','Validate_Code_Quality','tfsec_Security_Validation','OPA_Security_Validation']
     steps:    
       - name: Checkout Repository
         uses: actions/checkout@v2 
@@ -235,7 +233,7 @@ jobs:
   Send_notification:
         runs-on: ubuntu-latest
         if: success()
-        needs: ['Tranform_Format','Validate_Syntax_Semantics','Tfsec_job','Validate_OPA','Terraform_Plan_Apply']
+        needs: ['Tranform_Setup','Validate_Code_Quality','tfsec_Security_Validation','OPA_Security_Validation','Terraform_Plan_Apply']
         steps:
           - uses: actions/checkout@master
           - name: Microsoft Teams Notification
