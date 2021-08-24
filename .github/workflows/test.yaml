@@ -15,70 +15,70 @@ on:
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-    jobs:
-      success:
-        name: One with everything
-        runs-on: ubuntu-18.04
-        steps:
-          - uses: actions/checkout@master
-          - name: Microsoft Teams Notification
-            uses: skitionek/notify-microsoft-teams@master
-            if: always()
-            with:
-              webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-              needs: ${{ toJson(needs) }}
-              job: ${{ toJson(job) }}
-              steps: ${{ toJson(steps) }}
-              dry_run: True
+jobs:
+  success:
+    name: One with everything
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: always()
+        with:
+          webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
+          dry_run: True
 
 
-      without_optional_params:
-        name: One with little info
-        runs-on: ubuntu-18.04
-        steps:
-          - uses: actions/checkout@master
-          - name: Microsoft Teams Notification
-            uses: skitionek/notify-microsoft-teams@master
-            if: always()
-            with:
-              webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+  without_optional_params:
+    name: One with little info
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: always()
+        with:
+          webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
 
-      with_overwrite:
-        name: One with overwrite
-        runs-on: ubuntu-18.04
-        steps:
-          - uses: actions/checkout@master
-          - name: Microsoft Teams Notification
-            uses: skitionek/notify-microsoft-teams@master
-            if: always()
-            with:
-              webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-              overwrite: "{title: `Overwrote title in ${workflow_link}`}"
+  with_overwrite:
+    name: One with overwrite
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: always()
+        with:
+          webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          overwrite: "{title: `Overwrote title in ${workflow_link}`}"
 
-      with_raw:
-        name: One with raw data
-        runs-on: ubuntu-18.04
-        steps:
-          - uses: actions/checkout@master
-          - name: Microsoft Teams Notification
-            uses: skitionek/notify-microsoft-teams@master
-            if: always()
-            with:
-              webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-              raw: >-
-                {
-                  "@type": "MessageCard",
-                  "@context": "http://schema.org/extensions",
-                  "title": "No ${variables} avaliable in here"
-                }
+  with_raw:
+    name: One with raw data
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: always()
+        with:
+          webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          raw: >-
+            {
+              "@type": "MessageCard",
+              "@context": "http://schema.org/extensions",
+              "title": "No ${variables} avaliable in here"
+            }
 
-      if_failure:
-        name: Only if failure
-        runs-on: ubuntu-18.04
-        steps:
-          - uses: actions/checkout@master
-          - name: Microsoft Teams Notification
-            uses: skitionek/notify-microsoft-teams@master
-            if: failure()
-            with:
-              webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }} 
+  if_failure:
+    name: Only if failure
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: failure()
+        with:
+          webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }} 
