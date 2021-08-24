@@ -162,6 +162,7 @@ jobs:
           webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
         #  needs: ${{ toJson(needs) }}
           job: ${{ toJson(job) }}
+          overwrite: "{title: `OPA evaluation failed ${workflow_link}`}"
          # steps: ${{ toJson(steps) }}  
         continue-on-error: false
   Terraform_Plan_Apply:
