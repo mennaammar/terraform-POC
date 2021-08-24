@@ -56,6 +56,7 @@ module "s3_bucket" {
     enabled = true
   }
 
+
   ##################################################
   ##########Security bugs #################
     block_public_policy = true
@@ -70,6 +71,7 @@ module "s3_bucket" {
   #   } 
   # }
   
+
    logging = {
 		target_bucket = "bucket-logging-maf-us-east" #logging-bucketmaf
 	}
