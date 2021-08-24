@@ -60,6 +60,16 @@ jobs:
         id: validate
         run: terraform validate -no-color
         continue-on-error: false
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: failure()
+        with:
+          webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
+         # needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          overwrite: '{"title": "Issues Found in Terraform Syntax Validation"}'
+         # steps: ${{ toJson(steps) }}  
+        continue-on-error: false
         # make sure the terraform provider (AWS) code is correct. using correct aws instance type for example.
       - name: Terraform Tflint
         id: tflint-install
@@ -68,6 +78,16 @@ jobs:
       - name: Run Terraform Tflint 
         id: Tflint-run
         run: tflint --init  && tflint --module
+        continue-on-error: false
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: failure()
+        with:
+          webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
+         # needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          overwrite: '{"title": "Issues Found in Provider syntax Validation"}'
+         # steps: ${{ toJson(steps) }}  
         continue-on-error: false
   Tfsec_job:
     runs-on: ubuntu-latest
@@ -109,6 +129,16 @@ jobs:
              echo "tfsec returned ${tfsec_return}, expected '1'. Failing..."
               exit 0
              fi
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: failure()
+        with:
+          webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
+         # needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          overwrite: '{"title": "Vulnerabilities Found by tfsec"}'
+         # steps: ${{ toJson(steps) }}  
+        continue-on-error: false
   Validate_OPA:  
     runs-on: ubuntu-latest
     needs: ['Tranform_Format','Validate_Syntax_Semantics']
