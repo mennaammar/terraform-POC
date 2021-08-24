@@ -232,20 +232,20 @@ jobs:
         continue-on-error: false
 
         # send notification for the workflow run.    
-    Send_notification:
-      runs-on: ubuntu-latest
-      if: success()
-      needs: ['Terraform_Plan_Apply']
-      steps:
-        - uses: actions/checkout@master
-        - name: Microsoft Teams Notification
-          uses: skitionek/notify-microsoft-teams@master
-          if: success()
-          with:
-            webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
-            needs: ${{ toJson(needs) }}
-            job: ${{ toJson(job) }}
-            steps: ${{ toJson(steps) }}      
+  Send_notification:
+        runs-on: ubuntu-latest
+        if: success()
+        needs: ['Terraform_Plan_Apply']
+        steps:
+          - uses: actions/checkout@master
+          - name: Microsoft Teams Notification
+            uses: skitionek/notify-microsoft-teams@master
+            if: success()
+            with:
+              webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
+              needs: ${{ toJson(needs) }}
+              job: ${{ toJson(job) }}
+              steps: ${{ toJson(steps) }}      
 
     
 
