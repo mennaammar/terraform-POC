@@ -5,7 +5,7 @@ output "t2_instance_id" {
 }
 
 
-output "credit_specification_t2_unlimited" {
-  description = "Credit specification of t2-type EC2 instance"
-  value       = module.ec2_with_t2.credit_specification
-}
+# output "credit_specification_t2_unlimited" {
+#   description = "Credit specification of t2-type EC2 instance"
+#   value       = module.ec2_with_t2.credit_specification
+# }
