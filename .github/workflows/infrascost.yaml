@@ -29,4 +29,5 @@ jobs:
         INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
       with:
         path: plan.json
-        post_condition: '{"percentage_threshold": 0}'
+        post_condition: '{"always": true}'
+        GITHUB_TOKEN: ${{ secrets.XGITHUB_TOKEN }}
