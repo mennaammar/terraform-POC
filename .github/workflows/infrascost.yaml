@@ -29,3 +29,4 @@ jobs:
         INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
       with:
         path: plan.json
+        post_condition: '{"percentage_threshold": 0}'
