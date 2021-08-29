@@ -32,5 +32,5 @@ jobs:
       with:
         path: plan.json
         post_condition: '{"always": true}'
-     - name: get total cost
+    - name: get total cost
        run: echo ${{ steps.infracost.outputs.total_monthly_cost }} && echo ${{ steps.infracost.outputs.past_total_monthly_cost }}
