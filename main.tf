@@ -21,9 +21,9 @@ module "security_group" {
 }
 
 module "ec2_with_t2" {
-  source = "terraform-aws-modules/ec2-instance/aws"
+  source = "terraform-aws-modules/ec2-instance/aws:v2.19.0"
 
-  #instance_count = 1
+  instance_count = 1
 
   name          = "maf-instance-t2"
   ami           = "ami-0c2b8ca1dad447f8a" # the ami data source doesn't choose the correct one. ami-037aa94719126a377
