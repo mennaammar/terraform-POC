@@ -187,6 +187,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: ['Tranform_Setup','Validate_Code_Quality','tfsec_Security_Validation','OPA_Security_Validation']
     steps:   
+      - name: Terraform Init
+        id: init 
+        run: terraform init
+        continue-on-error: false
       - name: Terraform Plan
         id: plan
         run: terraform plan -out plan
