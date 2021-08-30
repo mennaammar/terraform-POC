@@ -205,7 +205,7 @@ jobs:
         continue-on-error: false
       - name: Show Plan
         id: show
-        run: terraform show -json plan | sed "1d"  > plan.json  
+        run: terraform show -json plan | sed "1d"  > /tmp/plan.json  
         continue-on-error: false
       - name: Run infracost diff
         id: infracost
@@ -214,7 +214,7 @@ jobs:
           INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.XGITHUB_TOKEN }}
         with:
-          path: plan.json
+          path: /tmp/plan.json
           post_condition: '{"always": true}'
       - name: get total cost
         run: echo ${{ steps.infracost.outputs.total_monthly_cost }} && echo ${{ steps.infracost.outputs.past_total_monthly_cost }}
