@@ -4,7 +4,7 @@
 
 module "security_group" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4.0"
+  version = "v4.3.0"
 
   name        = "example"
   description = "Security group for example usage with EC2 instance"
@@ -22,8 +22,8 @@ module "security_group" {
 
 module "ec2_with_t2" {
   source = "terraform-aws-modules/ec2-instance/aws"
-
-  #instance_count = 1
+  version = "v2.19.0"
+  instance_count = 1
 
   name          = "maf-instance-t2"
   ami           = "ami-0c2b8ca1dad447f8a" # the ami data source doesn't choose the correct one. ami-037aa94719126a377
@@ -48,7 +48,7 @@ module "ec2_with_t2" {
 }
 module "s3_bucket" {
   source = "terraform-aws-modules/s3-bucket/aws"
-
+  version = "v2.7.0"
   bucket = "my-s3-bucketmafterraformpoc"
   acl    = "private"
 

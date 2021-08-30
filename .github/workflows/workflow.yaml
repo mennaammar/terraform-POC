@@ -67,16 +67,16 @@ jobs:
         id: Tflint-run
         run: tflint --init  && tflint --module
         continue-on-error: false
-      # - name: Microsoft Teams Notification
-      #   uses: skitionek/notify-microsoft-teams@master
-      #   if: failure()
-      #   with:
-      #     webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
-      #    # needs: ${{ toJson(needs) }}
-      #     job: ${{ toJson(job) }}
-      #     overwrite: '{"title": "Issues Found in Code Quality Validation"}'
-      #    # steps: ${{ toJson(steps) }}  
-      #   continue-on-error: false
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: failure()
+        with:
+          webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
+         # needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          overwrite: '{"title": "Issues Found in Code Quality Validation"}'
+         # steps: ${{ toJson(steps) }}  
+        continue-on-error: false
   tfsec_Security_Validation:
     runs-on: ubuntu-latest
     needs: ['Tranform_Setup','Validate_Code_Quality']
@@ -117,16 +117,16 @@ jobs:
              echo "tfsec returned ${tfsec_return}, expected '1'. Failing..."
               exit 0
              fi
-      # - name: Microsoft Teams Notification
-      #   uses: skitionek/notify-microsoft-teams@master
-      #   if: failure()
-      #   with:
-      #     webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
-      #    # needs: ${{ toJson(needs) }}
-      #     job: ${{ toJson(job) }}
-      #     overwrite: '{"title": "Vulnerabilities Found by tfsec"}'
-      #    # steps: ${{ toJson(steps) }}  
-      #   continue-on-error: false
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: failure()
+        with:
+          webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
+         # needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          overwrite: '{"title": "Vulnerabilities Found by tfsec"}'
+         # steps: ${{ toJson(steps) }}  
+        continue-on-error: false
   OPA_Security_Validation:  
     runs-on: ubuntu-latest
     needs: ['Tranform_Setup','Validate_Code_Quality']
@@ -161,14 +161,7 @@ jobs:
         id: show
         run: terraform show -json opa-plan1 | sed "1d"  > opa-plan1.json  && cat opa-plan1.json
         continue-on-error: false
-        # test the OPA rules in .rego files againt the terrform plan.
-      # - name: Run infracost diff
-      #   uses: infracost/infracost-gh-action@master # Use a specific version instead of master if locking is preferred
-      #   env:
-      #     INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
-      #   with:
-      #     path: opa-plan1.json # Do not change as this file is generated above
-      #   continue-on-error: false
+        # test the OPA rules in .rego files againt the terrform plan.       
       - name: OPA Test
         id: opatest
         run:  opa eval  --format pretty  -d opa-policies/aws/ --input opa-plan1.json "data.terraform.deny"  
@@ -180,19 +173,44 @@ jobs:
             opa_return=$(opa eval  --format pretty  -d opa-policies/aws/ --input opa-plan1.json "count(data.terraform.deny)")
              exit $opa_return
         continue-on-error: false
-      # - name: Microsoft Teams Notification
-      #   uses: skitionek/notify-microsoft-teams@master
-      #   if: failure()
-      #   with:
-      #     webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
-      #    # needs: ${{ toJson(needs) }}
-      #     job: ${{ toJson(job) }}
-      #     overwrite: '{"title": "OPA evaluation failed"}'
-      #    # steps: ${{ toJson(steps) }}  
-      #   continue-on-error: false
-  Terraform_Plan_Apply:
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: failure()
+        with:
+          webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
+         # needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          overwrite: '{"title": "OPA evaluation failed"}'
+         # steps: ${{ toJson(steps) }}  
+        continue-on-error: false
+  Terraform_Cost_Estimate:
     runs-on: ubuntu-latest
     needs: ['Tranform_Setup','Validate_Code_Quality','tfsec_Security_Validation','OPA_Security_Validation']
+    steps:   
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -out plan
+        continue-on-error: false
+      - name: Show Plan
+        id: show
+        run: terraform show -json plan | sed "1d"  > plan.json  
+        continue-on-error: false
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Run infracost diff
+        id: infracost
+        uses: infracost/infracost-gh-action@master # Use a specific version instead of master if locking is preferred
+        env:
+          INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.XGITHUB_TOKEN }}
+        with:
+          path: plan.json
+          post_condition: '{"always": true}'
+      - name: get total cost
+        run: echo ${{ steps.infracost.outputs.total_monthly_cost }} && echo ${{ steps.infracost.outputs.past_total_monthly_cost }}
+  Terraform_Plan_Apply:
+    runs-on: ubuntu-latest
+    needs: ['Tranform_Setup','Validate_Code_Quality','tfsec_Security_Validation','OPA_Security_Validation','Terraform_Cost_Estimate']
     steps:    
       - name: Checkout Repository
         uses: actions/checkout@v2 
@@ -215,32 +233,32 @@ jobs:
         id: Apply
         run: terraform apply -auto-approve
         continue-on-error: false
-      # - name: Microsoft Teams Notification
-      #   uses: skitionek/notify-microsoft-teams@master
-      #   if: failure()
-      #   with:
-      #     webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
-      #    # needs: ${{ toJson(needs) }}
-      #     job: ${{ toJson(job) }}
-      #     overwrite: '{"title": "Issues occured during Applying Terraform"}'
-      #    # steps: ${{ toJson(steps) }}  
-      #   continue-on-error: false
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: failure()
+        with:
+          webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
+         # needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          overwrite: '{"title": "Issues occured during Applying Terraform"}'
+         # steps: ${{ toJson(steps) }}  
+        continue-on-error: false
 
         # send notification for the workflow run.    
-  # Send_notification:
-  #       runs-on: ubuntu-latest
-  #       if: success()
-  #       needs: ['Tranform_Setup','Validate_Code_Quality','tfsec_Security_Validation','OPA_Security_Validation','Terraform_Plan_Apply']
-  #       steps:
-  #         - uses: actions/checkout@master
-  #         - name: Microsoft Teams Notification
-  #           uses: skitionek/notify-microsoft-teams@master
-  #           if: success()
-  #           with:
-  #             webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
-  #             needs: ${{ toJson(needs) }}
-  #             job: ${{ toJson(job) }}
-  #             steps: ${{ toJson(steps) }}      
+  Send_notification:
+        runs-on: ubuntu-latest
+        if: success()
+        needs: ['Tranform_Setup','Validate_Code_Quality','tfsec_Security_Validation','OPA_Security_Validation','Terraform_Cost_Estimate','Terraform_Plan_Apply']
+        steps:
+          - uses: actions/checkout@master
+          - name: Microsoft Teams Notification
+            uses: skitionek/notify-microsoft-teams@master
+            if: success()
+            with:
+              webhook_url: ${{secrets.MS_TEAMS_WEBHOOK_URI}}
+              needs: ${{ toJson(needs) }}
+              job: ${{ toJson(job) }}
+              steps: ${{ toJson(steps) }}      
 
     
 
