@@ -218,7 +218,7 @@ jobs:
           post_condition: '{"always": true}'
       - name: get total cost
         run: echo ${{ steps.infracost.outputs.total_monthly_cost }} && echo ${{ steps.infracost.outputs.past_total_monthly_cost }}
-  Terraform_Plan_Apply:
+  Terraform_Apply:
     runs-on: ubuntu-latest
     needs: ['Tranform_Setup','Validate_Code_Quality','tfsec_Security_Validation','OPA_Security_Validation','Terraform_Cost_Estimate']
     steps:    
@@ -234,10 +234,10 @@ jobs:
         id: init
         run: terraform init
         continue-on-error: false
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan 
-        continue-on-error: false
+      # - name: Terraform Plan
+      #   id: plan
+      #   run: terraform plan 
+      #   continue-on-error: false
         # apply terraform plan. 
       - name: Terraform apply
         id: Apply
