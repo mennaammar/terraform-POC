@@ -258,7 +258,7 @@ jobs:
   Send_notification:
         runs-on: ubuntu-latest
         if: success()
-        needs: ['Tranform_Setup','Validate_Code_Quality','tfsec_Security_Validation','OPA_Security_Validation','Terraform_Cost_Estimate','Terraform_Plan_Apply']
+        needs: ['Tranform_Setup','Validate_Code_Quality','tfsec_Security_Validation','OPA_Security_Validation','Terraform_Cost_Estimate','Terraform_Apply']
         steps:
           - uses: actions/checkout@master
           - name: Microsoft Teams Notification
