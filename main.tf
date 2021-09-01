@@ -61,7 +61,7 @@ module "s3_bucket" {
     block_public_policy = true
      block_public_acls = true
      restrict_public_buckets = true
-    # ignore_public_acls = true
+     ignore_public_acls = true
      
      server_side_encryption_configuration = {
       rule = {
