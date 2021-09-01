@@ -101,6 +101,8 @@ jobs:
           working_directory: .
           sarif_file: tfsec.sarif 
         # upload the findings to security tab in github
+      - name: Read SARIF file
+        run: cat tfsec.sarif
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v1
         with:
