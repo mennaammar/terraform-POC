@@ -40,10 +40,10 @@ module "ec2_with_t2" {
   }	
    ###################################
    ####OPA ####
-   tags = {
-    BU   = "IT"
-    ENV = "dev"
-  }
+  #  tags = {
+  #   BU   = "IT"
+  #   ENV = "dev"
+  # }
    
 }
 module "s3_bucket" {
@@ -59,7 +59,7 @@ module "s3_bucket" {
   ##################################################
   ##########Security bugs #################
     block_public_policy = true
-     block_public_acls = true
+    # block_public_acls = true
      restrict_public_buckets = true
      ignore_public_acls = true
      
